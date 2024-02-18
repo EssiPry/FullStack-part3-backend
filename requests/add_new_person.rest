@@ -1,4 +1,4 @@
-POST https://fs-phonebook-yt9w.onrender.com/api/persons HTTP/1.1.
+POST https://localhost:3001/api/persons HTTP/1.1.
 content-type: application/json
 
 {
