@@ -39,13 +39,16 @@ app.get('/api/persons', (request, response) => {
     })
 })
 
-/*
+
 app.get('/info', (request, response) => {
-    const no_persons = persons.length
-    const d = new Date()
-    response.send(`<p>Phonebook has info for ${no_persons} people</p> <p>${d}</p>`)
+    response.writeHead(200, {'Content-Type': 'text/html'})
+    Person.find({}).then(people => {
+        console.log(people)
+        response.end(`<p>Phonebook has info for ${people.length} people.</p> <p>${new Date()}</p>`)
+    })
+
 })
-*/
+
 
 app.get('/api/persons/:id', (request, response, next) => {
     Person.findById(request.params.id)
@@ -78,6 +81,22 @@ app.post(`/api/persons`, (request, response) => {
     person.save().then(savedPerson => {
         response.json(savedPerson)
     })
+})
+
+
+app.put(`/api/persons/:id`, (request, response, next) => {
+    const body = request.body
+
+    const person = {
+        name : body.name,
+        number: body.number,
+    }
+
+    Person.findByIdAndUpdate(request.params.id, person, {new: true})
+    .then(updatedPerson => {
+        response.json(updatedPerson)
+    })
+    .catch(error => next(error))
 })
 
 
